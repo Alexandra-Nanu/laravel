@@ -18,6 +18,10 @@ class EventController extends Controller
         Event::create($request->all());
         return redirect()->route('events.index')->with('success', 'Event added successfully!');
     }
+    public function create()
+    {
+        return view('events.create');
+    }
     public function index()
     {
         $events = Event::paginate(10); // Paginare

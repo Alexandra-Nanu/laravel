@@ -17,6 +17,10 @@ class SuccessStoryController extends Controller
         SuccessStory::create($request->all());
         return redirect()->route('successStories.index')->with('success', 'Story added successfully!');
     }
+    public function create()
+    {
+        return view('successStories.create');
+    }
     public function index()
     {
         $successStories = SuccessStory::paginate(10); // Paginare
