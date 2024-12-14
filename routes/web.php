@@ -19,7 +19,7 @@ Route::get('/successStories/index', [SuccessStoryController::class, 'index']);
 /*Route::get('/successStories/create', [SuccessStoryController::class, 'create']);*/
 
 Route::prefix('members')->group(function () {
-   /* Route::get('/', [MemberController::class, 'index'])->name('members.index'); // Listare membri*/
+    /* Route::get('/', [MemberController::class, 'index'])->name('members.index'); // Listare membri*/
     Route::get('/create', [MemberController::class, 'create'])->name('members.create'); // Formular creare membru
     Route::post('/', [MemberController::class, 'store'])->name('members.store'); // Salvare membru nou
     Route::get('/{id}/edit', [MemberController::class, 'edit'])->name('members.edit'); // Formular editare
