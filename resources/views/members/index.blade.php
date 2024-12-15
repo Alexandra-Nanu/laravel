@@ -1,7 +1,50 @@
 @extends('layouts.master')
 @section('content')
 
+    <!-- Search and Filter Form -->
+    <form action="{{ route('members.index') }}" method="GET" style="margin-bottom: 20px;">
+        <input type="text" name="search" placeholder="Search by name or email"
+               value="{{ request('search') }}" style="padding: 5px; margin-right: 10px;">
 
+        <!-- Profession Filter -->
+        <select name="profession" style="padding: 5px; margin-right: 10px;">
+            <option value="">-- Select Profession --</option>
+            @foreach ($professions as $item)
+                <option value="{{ $item }}" {{ request('profession') == $item ? 'selected' : '' }}>
+                    {{ $item }}
+                </option>
+            @endforeach
+        </select>
+
+        <!-- Company Filter -->
+        <select name="company" style="padding: 5px; margin-right: 10px;">
+            <option value="">-- Select Company --</option>
+            @foreach ($companies as $item)
+                <option value="{{ $item }}" {{ request('company') == $item ? 'selected' : '' }}>
+                    {{ $item }}
+                </option>
+            @endforeach
+        </select>
+
+        <!-- Status Filter -->
+        <select name="status" style="padding: 5px; margin-right: 10px;">
+            <option value="">-- Select Status --</option>
+            @foreach ($statuses as $item)
+                <option value="{{ $item }}" {{ request('status') == $item ? 'selected' : '' }}>
+                    {{ ucfirst($item) }}
+                </option>
+            @endforeach
+        </select>
+
+        <!-- Submit and Clear Buttons -->
+        <button type="submit">Filter</button>
+        @if(request()->hasAny(['search', 'profession', 'company', 'status']))
+            <a href="{{ route('members.index') }}" style="margin-left: 10px;">Clear Filters</a>
+        @endif
+    </form>
+
+
+    <!--Members table-->
     <table>
         <thead>
         <tr>
@@ -38,6 +81,8 @@
         @endforeach
         </tbody>
     </table>
+
+
 
     {{ $members->links() }}
 

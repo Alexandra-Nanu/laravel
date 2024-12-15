@@ -24,11 +24,26 @@ class MemberController extends Controller
         return view('members.create');
     }
 
-    public function index()
+    /*public function index()
     {
         $members = Member::paginate(10); // Paginare
         return view('members.index', compact('members'));
+    }*/
+
+    public function index(Request $request)
+    {
+        // Check if there is a search query
+        $search = $request->input('search');
+
+        // Fetch members with or without search filter
+        $members = Member::when($search, function ($query, $search) {
+            return $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%");
+        })->paginate(10);
+
+        return view('members.index', compact('members', 'search'));
     }
+
 
     public function edit($id)
     {
