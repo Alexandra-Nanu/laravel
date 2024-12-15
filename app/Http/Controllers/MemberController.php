@@ -10,10 +10,17 @@ class MemberController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:members',
-            'profession' => 'required',
-            'linkedin_url' => 'nullable|url',
+            // Name: Required, string, max length 255, and allows letters, spaces, and common symbols
+            'name' => 'required|string|max:255|regex:/^[\pL\s\-\'\.]+$/u',
+
+            // Email: Required, valid email format, and unique in the 'members' table
+            'email' => 'required|email|unique:members,email|max:255',
+
+            // Profession: Required, string, max length 255
+            'profession' => 'required|string|max:255|regex:/^[\pL\s\-]+$/u',
+
+            // LinkedIn URL: Optional, must be a valid URL
+            'linkedin_url' => 'nullable|url|max:255',
         ]);
         Member::create($request->all());
         return redirect()->route('members.index')->with('success', 'Member added successfully!');
