@@ -14,8 +14,8 @@
         <label for="story">Story:</label>
         <textarea name="story" required>{{ old('story', $successStory->story) }}</textarea><br>
 
-        <label for="member_id">Member ID:</label>
-        <input type="number" name="member_id" value="{{ old('member_id', $successStory->member_id) }}" required><br>
+        <label for="member_name">Member Name:</label>
+        <input type="text" name="member_name" value="{{ old('member_name', $successStory->member->name ?? '') }}" required><br>
 
         <button type="submit">Update Story</button>
     </form>
