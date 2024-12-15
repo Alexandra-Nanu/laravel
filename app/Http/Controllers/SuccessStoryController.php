@@ -26,6 +26,11 @@ class SuccessStoryController extends Controller
         $successStories = SuccessStory::paginate(10); // Paginare
         return view('successStories.index', compact('successStories'));
     }
+    public function edit($id)
+    {
+        $successStory = SuccessStory::findOrFail($id);
+        return view('successStories.edit', compact('successStory'));
+    }
     public function update(Request $request, $id)
     {
         $request->validate([

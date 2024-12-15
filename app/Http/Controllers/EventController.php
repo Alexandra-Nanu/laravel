@@ -27,6 +27,11 @@ class EventController extends Controller
         $events = Event::paginate(10); // Paginare
         return view('events.index', compact('events'));
     }
+    public function edit($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('events.edit', compact('event'));
+    }
     public function update(Request $request, $id)
     {
         $request->validate([
