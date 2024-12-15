@@ -37,12 +37,33 @@ class SuccessStoryController extends Controller
         return view('successStories.create', compact('members'));
     }
 
-    public function index()
+    /*public function index()
     {
         // Fetch all success stories with related member info
         $successStories = SuccessStory::with('member')->paginate(10);
         return view('successStories.index', compact('successStories'));
+    }*/
+
+    public function index(Request $request)
+    {
+        // Get the search query for member name
+        $memberName = $request->input('member_name');
+
+        // Query success stories with member name filter
+        $successStories = SuccessStory::with('member')
+            ->when($memberName, function ($query, $memberName) {
+                return $query->whereHas('member', function ($query) use ($memberName) {
+                    $query->where('name', 'LIKE', "%{$memberName}%");
+                });
+            })
+            ->paginate(10);
+
+        // Get distinct member names for filtering options
+        $memberNames = Member::pluck('name');
+
+        return view('successStories.index', compact('successStories', 'memberName', 'memberNames'));
     }
+
 
     public function edit($id)
     {

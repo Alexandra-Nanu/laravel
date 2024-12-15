@@ -24,7 +24,11 @@
         <input type="url" name="linkedin_url" value="{{ old('linkedin_url', $member->linkedin_url) }}" required><br>
 
         <label for="status">Status:</label>
-        <input type="text" name="status" value="{{ old('status', $member->status) }}" required><br>
+        <select name="status" id="status" required>
+            <option value="active" {{ old('status', $member->status) == 'active' ? 'selected' : '' }}>Active</option>
+            <option value="inactive" {{ old('status', $member->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
+        </select><br>
+
 
         <button type="submit">Update Member</button>
     </form>

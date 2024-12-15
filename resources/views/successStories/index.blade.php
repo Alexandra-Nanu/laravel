@@ -1,6 +1,25 @@
 @extends('layouts.master')
 @section('content')
 
+    <!-- Filtering Section -->
+    <form action="{{ route('successStories.index') }}" method="GET" style="margin-bottom: 20px;">
+        <!-- Member Name Filter -->
+        <select name="member_name" style="padding: 5px; margin-right: 10px;">
+            <option value="">-- Filter by Member Name --</option>
+            @foreach ($memberNames as $name)
+                <option value="{{ $name }}" {{ request('member_name') == $name ? 'selected' : '' }}>
+                    {{ $name }}
+                </option>
+            @endforeach
+        </select>
+
+        <!-- Submit and Clear Buttons -->
+        <button type="submit">Filter</button>
+        @if(request('member_name'))
+            <a href="{{ route('successStories.index') }}" style="margin-left: 10px;">Clear Filter</a>
+        @endif
+    </form>
+
     <table>
         <thead>
         <tr>
