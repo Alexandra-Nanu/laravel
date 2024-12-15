@@ -6,7 +6,6 @@
         <tr>
             <th>Title</th>
             <th>Story</th>
-            <th>Member ID</th>
             <th>Member Name</th>
             <th>Actions</th>
         </tr>

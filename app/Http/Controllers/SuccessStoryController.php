@@ -47,9 +47,11 @@ class SuccessStoryController extends Controller
     public function edit($id)
     {
         $successStory = SuccessStory::findOrFail($id);
-        $members = Member::pluck('name');
+        $members = Member::pluck('name'); // Fetch all member names
+
         return view('successStories.edit', compact('successStory', 'members'));
     }
+
 
     public function update(Request $request, $id)
     {
