@@ -7,6 +7,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <a href="{{ route('members.index') }}" class="btn btn-secondary">View Members</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('members.create') }}" class="btn btn-primary">Add Member</a>
                     </li>
                     <li class="nav-item">

@@ -2,35 +2,37 @@
 @section('content')
 
 
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Date</th>
-        <th>Description</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach ($events as $event)
+    <table>
+        <thead>
         <tr>
-            <td>{{ $event->name }}</td>
-            <td>{{ $event->event_date }}</td>
-            <td>{{ $event->description }}</td>
-            <td>
-                <a href="{{ route('events.edit', $event->id) }}">Edit</a>
-                <form action="{{ route('events.destroy', $event->id) }}"
-                      method="POST" style="display: inline-block;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Actions</th>
         </tr>
-    @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        @foreach ($events as $event)
+            <tr>
+                <td>{{ $event->name }}</td>
+                <td>{{ $event->event_date }}</td>
+                <td>{{ $event->description }}</td>
+                <td>
+                    <a href="{{ route('events.edit', $event->id) }}">Edit</a>
+                    <form action="{{ route('events.destroy', $event->id) }}"
+                          method="POST"
+                          style="display: inline-block;"
+                          onsubmit="return confirm('Are you sure you want to delete this member?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
 
-{{ $events->links() }}
+    {{ $events->links() }}
 
 @endsection
