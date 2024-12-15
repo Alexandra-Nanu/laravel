@@ -30,7 +30,7 @@ class MemberController extends Controller
         return view('members.index', compact('members'));
     }*/
 
-    public function index(Request $request)
+    /*public function index(Request $request)
     {
         // Check if there is a search query
         $search = $request->input('search');
@@ -42,7 +42,40 @@ class MemberController extends Controller
         })->paginate(10);
 
         return view('members.index', compact('members', 'search'));
+    }*/
+
+    public function index(Request $request)
+    {
+        // Fetch input values for search and filters
+        $search = $request->input('search');
+        $profession = $request->input('profession');
+        $company = $request->input('company');
+        $status = $request->input('status');
+
+        // Query members with search and filters
+        $members = Member::when($search, function ($query, $search) {
+            return $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%");
+        })
+            ->when($profession, function ($query, $profession) {
+                return $query->where('profession', $profession);
+            })
+            ->when($company, function ($query, $company) {
+                return $query->where('company', $company);
+            })
+            ->when($status, function ($query, $status) {
+                return $query->where('status', $status);
+            })
+            ->paginate(10);
+
+        // Fetch distinct values for filters
+        $professions = Member::distinct()->pluck('profession');
+        $companies = Member::distinct()->pluck('company');
+        $statuses = ['active', 'inactive'];
+
+        return view('members.index', compact('members', 'search', 'professions', 'companies', 'statuses', 'profession', 'company', 'status'));
     }
+
 
 
     public function edit($id)
