@@ -104,5 +104,16 @@ class SuccessStoryController extends Controller
         return $this->belongsTo(Member::class, 'member_id');
     }
 
+    public function destroy($id)
+    {
+        // Find the success story by ID
+        $successStory = SuccessStory::findOrFail($id);
+
+        // Delete the success story
+        $successStory->delete();
+
+        // Redirect back to the success stories index with a success message
+        return redirect()->route('successStories.index')->with('success', 'Success story deleted successfully!');
+    }
 
 }

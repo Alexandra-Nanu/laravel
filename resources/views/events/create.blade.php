@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
 
-
+<h1>Add Event</h1>
 <form action="{{ route('events.store') }}" method="POST">
     @csrf
     <label for="name">Name:</label>

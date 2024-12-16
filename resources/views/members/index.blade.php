@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('content')
 
+    <h1>Members</h1>
+
     <!-- Search and Filter Form -->
     <form action="{{ route('members.index') }}" method="GET" style="margin-bottom: 20px;">
         <input type="text" name="search" placeholder="Search by name or email"
