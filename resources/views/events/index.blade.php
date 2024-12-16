@@ -34,6 +34,6 @@
         </tbody>
     </table>
 
-    {{ $events->links() }}
+    {{ $events->links() }} <!--laravel pagination-->
 
 @endsection

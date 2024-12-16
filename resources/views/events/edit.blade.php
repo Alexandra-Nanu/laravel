@@ -6,7 +6,7 @@
 
     <form action="{{ route('events.update', $event->id) }}" method="POST">
         @csrf
-        @method('PATCH')
+        @method('PATCH') <!--used to partially update specific fields in the database record-->
 
         <label for="name">Name:</label>
         <input type="text" name="name" value="{{ old('name', $event->name) }}" required><br>

@@ -7,12 +7,12 @@
     <meta name="author" content=" …">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <title>Women Techpower</title>
-    @include('partials.styles')
+    @include('partials.styles') <!--link styling sheet-->
 </head>
 <body>
-@include('partials.header')
+@include('partials.header') <!--link header-->
 <main class="container mt-5">
-    @yield('content')
+    @yield('content') <!--specified  scetion that child views can fill with specific content when extending a layout-->
 </main>
 @include('partials.footer')
 </body>
