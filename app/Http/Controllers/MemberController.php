@@ -9,18 +9,12 @@ class MemberController extends Controller
 {
     public function store(Request $request)
     {
+        //store method to handle adding a new member
         $request->validate([
-            // Name: Required, string, max length 255, and allows letters, spaces, and common symbols
-            'name' => 'required|string|max:255|regex:/^[\pL\s\-\'\.]+$/u',
-
-            // Email: Required, valid email format, and unique in the 'members' table
-            'email' => 'required|email|unique:members,email|max:255',
-
-            // Profession: Required, string, max length 255
-            'profession' => 'required|string|max:255|regex:/^[\pL\s\-]+$/u',
-
-            // LinkedIn URL: Optional, must be a valid URL
-            'linkedin_url' => 'nullable|url|max:255',
+            'name' => 'required|string|max:255|regex:/^[\pL\s\-\'\.]+$/u', //name: required, string, max length 255, and allows letters, spaces, and common symbols
+            'email' => 'required|email|unique:members,email|max:255', //email: required, valid email format, and unique in the 'members' table
+            'profession' => 'required|string|max:255|regex:/^[\pL\s\-]+$/u',    //profession: required, string, max length 255
+            'linkedin_url' => 'nullable|url|max:255', //linkedIn URL: optional, must be a valid URL
         ]);
         Member::create($request->all());
         return redirect()->route('members.index')->with('success', 'Member added successfully!');
@@ -30,41 +24,24 @@ class MemberController extends Controller
     {
         return view('members.create');
     }
-
-    /*public function index()
-    {
-        $members = Member::paginate(10); // Paginare
-        return view('members.index', compact('members'));
-    }*/
-
-    /*public function index(Request $request)
-    {
-        // Check if there is a search query
-        $search = $request->input('search');
-
-        // Fetch members with or without search filter
-        $members = Member::when($search, function ($query, $search) {
-            return $query->where('name', 'LIKE', "%{$search}%")
-                ->orWhere('email', 'LIKE', "%{$search}%");
-        })->paginate(10);
-
-        return view('members.index', compact('members', 'search'));
-    }*/
-
     public function index(Request $request)
     {
-        // Fetch input values for search and filters
-        $search = $request->input('search');
-        $profession = $request->input('profession');
-        $company = $request->input('company');
-        $status = $request->input('status');
+        //get search and filter parameters
+        $search = $request->input('search'); //search by name or email
+        $profession = $request->input('profession'); //filter by profession
+        $company = $request->input('company'); //filter by company
+        $status = $request->input('status'); //filter by status
 
-        // Query members with search and filters
-        $members = Member::when($search, function ($query, $search) {
+        //build query with search and filters
+        $members = Member::when($search, function ($query, $search) { //initialization
+            //when: laravel query builder method that conditionally applies logic
+            //search: if search is not null, the provided closure (function) will be executed
+            //query: query builder instance for the Member model (allows modification of the query)
+            //search: passed into the closure and contains the search term
             return $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('email', 'LIKE', "%{$search}%");
         })
-            ->when($profession, function ($query, $profession) {
+            ->when($profession, function ($query, $profession) { //searches where profession matches the provided value
                 return $query->where('profession', $profession);
             })
             ->when($company, function ($query, $company) {
@@ -75,28 +52,22 @@ class MemberController extends Controller
             })
             ->paginate(10);
 
-        // Fetch distinct values for filters
-        $professions = Member::distinct()->pluck('profession');
+        //fetch unique filter options
+        $professions = Member::distinct()->pluck('profession'); //returns a single column's value
         $companies = Member::distinct()->pluck('company');
         $statuses = ['active', 'inactive'];
 
-        return view('members.index', compact('members', 'search', 'professions', 'companies', 'statuses', 'profession', 'company', 'status'));
+        return view('members.index', compact('members', 'professions', 'companies', 'statuses'));
     }
-
-
 
     public function edit($id)
     {
-        // Caută membrul în baza de date după ID
         $member = Member::findOrFail($id);
-
-        // Returnează vederea 'members.edit' cu membrul găsit
         return view('members.edit', compact('member'));
     }
 
     public function update(Request $request, $id)
     {
-        // Validează datele primite din formular
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:members,email,' . $id, // Ignoră email-ul curent la verificare
@@ -106,10 +77,7 @@ class MemberController extends Controller
             'status' => 'required|in:active,inactive', // Status trebuie să fie 'active' sau 'inactive'
         ]);
 
-        // Găsește membrul în baza de date
         $member = Member::findOrFail($id);
-
-        // Actualizează datele membrului cu cele din request
         $member->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -118,8 +86,6 @@ class MemberController extends Controller
             'linkedin_url' => $request->input('linkedin_url'),
             'status' => $request->input('status'),
         ]);
-
-        // Redirecționează către lista membrilor cu un mesaj de succes
         return redirect()->route('members.index')->with('success', 'Member updated successfully!');
     }
 
