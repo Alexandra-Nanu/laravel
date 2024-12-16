@@ -5,7 +5,7 @@
 
 <h1>Add Event</h1>
 <form action="{{ route('events.store') }}" method="POST">
-    @csrf
+    @csrf <!--use for security reasons, to counter cross-site request forgery atacs-->
     <label for="name">Name:</label>
     <input type="text" name="name" required><br>
 
