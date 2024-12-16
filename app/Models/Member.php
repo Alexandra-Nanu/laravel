@@ -9,7 +9,7 @@ class Member extends Model
 {
     //use HasFactory;
     public $timestamps = false;
-    protected $fillable = [
+    protected $fillable = [//specifies what columns to import from the database
         'name',
         'email',
         'profession',

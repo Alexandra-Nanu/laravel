@@ -11,7 +11,7 @@ class SuccessStory extends Model
     public $timestamps = false; //deactivate timestamps
     protected $fillable = ['title', 'story', 'member_id'];
 
-    // Define the relationship to Member
+    //define the relationship to Member
     public function member()
     {
         return $this->belongsTo(Member::class, 'member_id');
