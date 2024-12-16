@@ -10,17 +10,14 @@ class SuccessStoryController extends Controller
 {
     public function store(Request $request)
     {
-        // Validate input, ensuring the member's name exists in the database
         $request->validate([
             'title' => 'required',
             'story' => 'required',
             'member_name' => 'required|exists:members,name',
         ]);
 
-        // Find the member's ID based on the provided name
         $member = Member::where('name', $request->input('member_name'))->firstOrFail();
 
-        // Create the success story using the member's ID
         SuccessStory::create([
             'title' => $request->input('title'),
             'story' => $request->input('story'),
@@ -32,24 +29,15 @@ class SuccessStoryController extends Controller
 
     public function create()
     {
-        // Fetch all member names for the dropdown
         $members = Member::pluck('name');
         return view('successStories.create', compact('members'));
     }
 
-    /*public function index()
-    {
-        // Fetch all success stories with related member info
-        $successStories = SuccessStory::with('member')->paginate(10);
-        return view('successStories.index', compact('successStories'));
-    }*/
-
     public function index(Request $request)
     {
-        // Get the search query for member name
         $memberName = $request->input('member_name');
 
-        // Query success stories with member name filter
+        //filter success stories by members
         $successStories = SuccessStory::with('member')
             ->when($memberName, function ($query, $memberName) {
                 return $query->whereHas('member', function ($query) use ($memberName) {
@@ -57,36 +45,29 @@ class SuccessStoryController extends Controller
                 });
             })
             ->paginate(10);
-
-        // Get distinct member names for filtering options
-        $memberNames = Member::pluck('name');
-
+        $memberNames = Member::pluck('name'); //get distinct member names for filtering options
         return view('successStories.index', compact('successStories', 'memberName', 'memberNames'));
     }
-
 
     public function edit($id)
     {
         $successStory = SuccessStory::findOrFail($id);
-        $members = Member::pluck('name'); // Fetch all member names
+        $members = Member::pluck('name'); //fetch all member names
 
         return view('successStories.edit', compact('successStory', 'members'));
     }
 
-
     public function update(Request $request, $id)
     {
-        // Validate input
         $request->validate([
             'title' => 'required',
             'story' => 'required',
             'member_name' => 'required|exists:members,name',
         ]);
 
-        // Find the member's ID based on the provided name
         $member = Member::where('name', $request->input('member_name'))->firstOrFail();
 
-        // Find the success story and update it
+        //find the success story and update it
         $successStory = SuccessStory::findOrFail($id);
         $successStory->update([
             'title' => $request->input('title'),
@@ -97,8 +78,6 @@ class SuccessStoryController extends Controller
         return redirect()->route('successStories.index')->with('success', 'Story updated successfully!');
     }
 
-    // app/Models/SuccessStory.php
-
     public function member()
     {
         return $this->belongsTo(Member::class, 'member_id');
@@ -106,13 +85,13 @@ class SuccessStoryController extends Controller
 
     public function destroy($id)
     {
-        // Find the success story by ID
+        //find the success story by ID
         $successStory = SuccessStory::findOrFail($id);
 
-        // Delete the success story
+        //felete the success story
         $successStory->delete();
 
-        // Redirect back to the success stories index with a success message
+        //redirect back to the success stories index with a success message
         return redirect()->route('successStories.index')->with('success', 'Success story deleted successfully!');
     }
 
