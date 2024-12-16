@@ -1,4 +1,6 @@
+<!--this blade is extending the base layout file-->
 @extends('layouts.master')
+<!--include what is in the yield in layout-->
 @section('content')
 
 <h1>Add Event</h1>
@@ -16,5 +18,5 @@
     <button type="submit">Add Event</button>
 </form>
 
-
+<!--end of import-->
 @endsection

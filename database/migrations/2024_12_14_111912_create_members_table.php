@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
+        //create the members table
         Schema::create('members', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // primary key column, auto incrementing integer
             $table->string('name');
             $table->string('email')->unique();
             $table->string('profession');
             $table->string('company')->nullable();
             $table->string('linkedin_url')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->timestamps();
+            $table->timestamps();// automatically managed created_at and updated_at
         });
     }
 
